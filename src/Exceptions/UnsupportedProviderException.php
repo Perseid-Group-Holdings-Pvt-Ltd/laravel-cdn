@@ -1,6 +1,6 @@
 <?php
 
-namespace Perseid\Exceptions;
+namespace Perseid\LaravelCdn\Exceptions;
 
 class UnsupportedProviderException
 {

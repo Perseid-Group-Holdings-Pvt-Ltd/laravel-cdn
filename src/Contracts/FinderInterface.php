@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Perseid\Contracts;
+namespace Perseid\LaravelCdn\Contracts;
 
 interface FinderInterface
 {

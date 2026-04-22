@@ -1,6 +1,6 @@
 <?php
 
-namespace Perseid\Facades;
+namespace Perseid\LaravelCdn\Facades;
 
 class CdnFacadeAccessor
 {
