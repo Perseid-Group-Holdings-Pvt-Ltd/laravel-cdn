@@ -1,7 +1,7 @@
 {
     "name": "perseid/laravel-cdn",
     "description": "A cdn helper package for Laravel applications.",
-    "keywords": ["php", "laravel", "cdn"],
+    "keywords": ["cdn", "laravel", "helper", "perseid", "codevue"],
     "license": "MIT",
     "authors": [
         {
