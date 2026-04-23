@@ -4,6 +4,8 @@ namespace Perseid\LaravelCdn;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Perseid\LaravelCdn\Console\EmptyCommand;
+use Perseid\LaravelCdn\Console\PushCommand;
 
 class CdnServiceProvider extends ServiceProvider
 {
@@ -12,6 +14,13 @@ class CdnServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/cdn.php' => config_path('cdn.php'),
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PushCommand::class,
+                EmptyCommand::class,
+            ]);
+        }
     }
 
     public function register(): void
