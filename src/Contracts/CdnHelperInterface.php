@@ -12,7 +12,7 @@ interface CdnHelperInterface
 
     public function parseUrl($url);
 
-    public function startsWith($haystack, $needle);
+    public function startsWith(string $haystack, string $needle);
 
     public function cleanPath($path);
 }

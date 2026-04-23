@@ -54,9 +54,9 @@ class CdnHelper implements CdnHelperInterface
     /**
      * check if a string starts with a string.
      */
-    public function startsWith($with, $str): bool
+    public function startsWith(string $haystack, string $needle): bool
     {
-        return str_starts_with((string) $str, (string) $with);
+        return str_starts_with($haystack, $needle);
     }
 
     /**
