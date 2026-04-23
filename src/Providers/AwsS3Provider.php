@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Perseid\LaravelCdn\Providers;
 
-use App\CDN\Validators\Contracts\ConfigurationsInterface;
 use Aws\S3\BatchDelete;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use Exception;
 use Illuminate\Support\Collection;
 use Perseid\LaravelCdn\Contracts\CdnHelperInterface;
 use Perseid\LaravelCdn\Providers\Contracts\ProviderInterface;
@@ -52,34 +52,16 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     protected array $supplier;
 
-    /**
-     * @var Instance of Aws\S3\S3Client
-     */
     protected S3Client $s3_client;
 
-    /**
-     * @var Instance of Guzzle\Batch\BatchBuilder
-     */
     protected $batch;
 
-    /**
-     * @var \App\CDN\Contracts\CdnHelperInterface
-     */
     protected $cdn_helper;
 
-    /**
-     * @var ConfigurationsInterface
-     */
     protected $configurations;
 
-    /**
-     * @var \App\CDN\Validators\Contracts\ProviderValidatorInterface
-     */
     protected $provider_validator;
 
-    /**
-     * @param\App\CDN\Contracts\CdnHelperInterface                    $cdn_helper
-     */
     public function __construct(
         ConsoleOutput $console,
         ProviderValidatorInterface $provider_validator,
@@ -90,9 +72,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $this->cdn_helper = $cdn_helper;
     }
 
-    /**
-     * @return Mix | null
-     */
     public function __get(string $attr): mixed
     {
         return $this->supplier[$attr] ?? null;
@@ -100,7 +79,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Read the configuration and prepare an array with the relevant configurations
-     * for the (AWS S3) provider. and return itself.
+     * for the (AWS S3) provider and return itself.
      *
      *
      * @return $this
@@ -192,7 +171,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Create an S3 client instance
-     * (Note: it will read the credentials form the .env file).
+     * (Note: it will read the credentials from the .env file).
      */
     public function connect(): bool
     {
@@ -206,7 +185,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             ]
             )
             );
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->console->writeln('<fg=red>Connection error: '.$exception->getMessage().'</fg=red>');
 
             return false;
@@ -220,15 +199,12 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $this->s3_client = $s3_client;
     }
 
-    /**
-     * @return array
-     */
     public function getBucket(): string
     {
-        // this step is very important, "always assign returned array from
+        // this step is very important, "always assign a returned array from a
         // magical function to a local variable if you need to modify it's
         // state or apply any php function on it." because the returned is
-        // a copy of the original variable. this prevent this error:
+        // a copy of the original variable. this prevents this error:
         // Indirect modification of overloaded property
         // Vinelab\Cdn\Providers\AwsS3Provider::$buckets has no effect
         $bucket = $this->buckets;
