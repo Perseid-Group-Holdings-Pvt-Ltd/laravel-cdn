@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Perseid\LaravelCdn;
 
 use Perseid\LaravelCdn\Contracts\CdnFacadeInterface;
@@ -137,7 +139,7 @@ class CdnFacade implements CdnFacadeInterface
      *
      * @throws EmptyPathException
      */
-    public function path($path)
+    public function path(string $path)
     {
         return $this->generateUrl($path);
     }

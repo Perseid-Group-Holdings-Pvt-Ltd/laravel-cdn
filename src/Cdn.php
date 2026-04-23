@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Perseid\LaravelCdn;
 
 use Perseid\LaravelCdn\Contracts\AssetInterface;

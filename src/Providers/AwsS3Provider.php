@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Perseid\LaravelCdn\Providers;
 
 use App\CDN\Validators\Contracts\ConfigurationsInterface;
@@ -298,7 +300,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $url = $this->cdn_helper->parseUrl($this->getUrl());
 
         $bucket = $this->getBucket();
-        $bucket = (empty($bucket)) ? '' : $bucket.'.';
+        $bucket = ($bucket === '' || $bucket === '0') ? '' : $bucket.'.';
 
         return $url['scheme'].'://'.$bucket.$url['host'].'/'.$path;
     }
