@@ -8,7 +8,7 @@
 </p>
 
 ------
-This package provides a wonderful CDN helper to integrate any Laravel application with a CDN provider like Cloudflare.
+This package provides a wonderful CDN helper to integrate any Laravel application with a CDN provider like Cloudfront.
 
 > **Requires [PHP 8.3+](https://php.net/releases/)**
 

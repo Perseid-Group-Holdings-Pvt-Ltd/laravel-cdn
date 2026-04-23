@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Perseid\LaravelCdn;
 
+use Illuminate\Http\Request;
+use InvalidArgumentException;
 use Perseid\LaravelCdn\Contracts\CdnFacadeInterface;
 use Perseid\LaravelCdn\Contracts\CdnHelperInterface;
 use Perseid\LaravelCdn\Contracts\ProviderFactoryInterface;
@@ -13,21 +15,10 @@ use Perseid\LaravelCdn\Validators\CdnFacadeValidator;
 
 class CdnFacade implements CdnFacadeInterface
 {
-    /**
-     * @var array
-     */
-    protected $configurations;
+    protected array $configurations;
 
-    /**
-     * instance of the default provider object.
-     *
-     * @var ProviderInterface
-     */
-    protected $provider;
+    protected ProviderInterface $provider;
 
-    /**
-     * Calls the provider initializer.
-     */
     public function __construct(
         protected ProviderFactoryInterface $provider_factory,
         protected CdnHelperInterface $helper,
@@ -44,62 +35,10 @@ class CdnFacade implements CdnFacadeInterface
      *
      * @throws EmptyPathException
      */
-    public function asset($path): mixed
+    public function asset($path): string
     {
         // if asset always append the public/ dir to the path (since the user should not add public/ to asset)
         return $this->generateUrl($path, $this->configurations['providers']['aws']['s3']['upload_folder'].'public/');
-    }
-
-    /**
-     * this function will be called from the 'views' using the
-     * 'Cdn' facade {{Cdn::mix('')}} to convert the Laravel 5.4 webpack mix
-     * generated file path into it's CDN url.
-     *
-     *
-     * @return mixed
-     *
-     * @throws EmptyPathException, \InvalidArgumentException
-     */
-    public function mix(string $path)
-    {
-        static $manifest = null;
-        if (is_null($manifest)) {
-            $manifest = json_decode(file_get_contents(public_path('mix-manifest.json')), true);
-        }
-
-        if (isset($manifest['/'.$path])) {
-            return $this->generateUrl($manifest['/'.$path], 'public/');
-        }
-
-        if (isset($manifest[$path])) {
-            return $this->generateUrl($manifest[$path], 'public/');
-        }
-
-        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
-    }
-
-    /**
-     * this function will be called from the 'views' using the
-     * 'Cdn' facade {{Cdn::elixir('')}} to convert the elixir generated file path into
-     * it's CDN url.
-     *
-     *
-     * @return mixed
-     *
-     * @throws EmptyPathException, \InvalidArgumentException
-     */
-    public function elixir($path)
-    {
-        static $manifest = null;
-        if (is_null($manifest)) {
-            $manifest = json_decode(file_get_contents(public_path('build/rev-manifest.json')), true);
-        }
-
-        if (isset($manifest[$path])) {
-            return $this->generateUrl('build/'.$manifest[$path], 'public/');
-        }
-
-        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
     }
 
     /**
@@ -108,11 +47,11 @@ class CdnFacade implements CdnFacadeInterface
      * it's CDN url.
      *
      *
-     * @return mixed
+     * @param $path
+     * @return string
      *
-     * @throws EmptyPathException, \InvalidArgumentException
      */
-    public function vite($path)
+    public function vite($path): string
     {
         static $manifest = null;
         if (is_null($manifest)) {
@@ -126,7 +65,7 @@ class CdnFacade implements CdnFacadeInterface
                 $this->configurations['providers']['aws']['s3']['upload_folder'].'public/');
         }
 
-        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
+        throw new InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
     }
 
     /**
@@ -135,11 +74,11 @@ class CdnFacade implements CdnFacadeInterface
      * it's CDN url.
      *
      *
-     * @return mixed
+     * @param string $path
+     * @return string
      *
-     * @throws EmptyPathException
      */
-    public function path(string $path)
+    public function path(string $path): string
     {
         return $this->generateUrl($path);
     }
@@ -162,9 +101,11 @@ class CdnFacade implements CdnFacadeInterface
      * check if package is surpassed or not then
      * prepare the path before generating the url.
      *
-     * @return mixed
+     * @param string $path
+     * @param string $prepend
+     * @return string
      */
-    private function generateUrl(string $path, string $prepend = '')
+    private function generateUrl(string $path, string $prepend = ''): string
     {
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost
@@ -175,13 +116,6 @@ class CdnFacade implements CdnFacadeInterface
         if (! isset($path)) {
             throw new EmptyPathException('Path does not exist.');
         }
-
-        // Add version number
-        // $path = str_replace(
-        //    "build",
-        //    $this->configurations['providers']['aws']['s3']['version'],
-        //    $path
-        // );
 
         // remove slashes from begging and ending of the path
         // and append directories if needed
