@@ -2,6 +2,7 @@
 
 namespace Perseid\LaravelCdn;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class CdnServiceProvider extends ServiceProvider

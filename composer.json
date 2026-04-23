@@ -42,6 +42,16 @@
             "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Perseid\\LaravelCdn\\CdnServiceProvider"
+            ],
+            "aliases": {
+                "Cdn": "Perseid\\LaravelCdn\\CdnFacade"
+            }
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {

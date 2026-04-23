@@ -35,9 +35,8 @@ class CdnHelper implements CdnHelperInterface
         // search for any null or empty field to throw an exception
         $missing = '';
         foreach ($configuration as $key => $value) {
-            if (in_array($key, $required) &&
-                (empty($value) || $value == null || $value == '')
-            ) {
+            if (in_array($key, $required) && empty($value))
+            {
                 $missing .= ' '.$key;
             }
         }
