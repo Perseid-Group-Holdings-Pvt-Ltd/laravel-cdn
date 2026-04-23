@@ -1,7 +1,13 @@
 {
     "name": "perseid/laravel-cdn",
     "description": "A cdn helper package for Laravel applications.",
-    "keywords": ["cdn", "laravel", "helper", "perseid", "codevue"],
+    "keywords": [
+        "cdn",
+        "laravel",
+        "helper",
+        "perseid",
+        "codevue"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -16,6 +22,7 @@
     },
     "require-dev": {
         "laravel/pint": "^1.29.0",
+        "orchestra/testbench": "^11.1",
         "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-type-coverage": "^4.0",
         "phpstan/phpstan": "^2.1.44",
@@ -29,7 +36,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "minimum-stability": "dev",
@@ -55,6 +65,18 @@
             "@test:unit",
             "@test:types",
             "@test:refactor"
+        ],
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
         ]
     }
 }
