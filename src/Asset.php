@@ -66,7 +66,7 @@ class Asset implements AssetInterface
      * @param  array  $configurations
      * @return $this
      */
-    public function init($configurations = [])
+    public function init($configurations = []): static
     {
         $this->parseAndFillConfiguration($configurations);
 
@@ -83,58 +83,37 @@ class Asset implements AssetInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getIncludedDirectories()
+    public function getIncludedDirectories(): array
     {
         return $this->included_directories;
     }
 
-    /**
-     * @return array
-     */
-    public function getIncludedExtensions()
+    public function getIncludedExtensions(): array
     {
         return $this->included_extensions;
     }
 
-    /**
-     * @return array
-     */
-    public function getIncludedPatterns()
+    public function getIncludedPatterns(): array
     {
         return $this->included_patterns;
     }
 
-    /**
-     * @return array
-     */
-    public function getExcludedDirectories()
+    public function getExcludedDirectories(): array
     {
         return $this->excluded_directories;
     }
 
-    /**
-     * @return array
-     */
-    public function getExcludedFiles()
+    public function getExcludedFiles(): array
     {
         return $this->excluded_files;
     }
 
-    /**
-     * @return array
-     */
-    public function getExcludedExtensions()
+    public function getExcludedExtensions(): array
     {
         return $this->excluded_extensions;
     }
 
-    /**
-     * @return array
-     */
-    public function getExcludedPatterns()
+    public function getExcludedPatterns(): array
     {
         return $this->excluded_patterns;
     }
@@ -150,7 +129,7 @@ class Asset implements AssetInterface
     /**
      * @param  mixed  $assets
      */
-    public function setAssets($assets)
+    public function setAssets($assets): void
     {
         $this->assets = $assets;
     }
@@ -167,7 +146,7 @@ class Asset implements AssetInterface
      * Check if the config file has any missed attribute, and if any attribute
      * is missed will be overridden by a default attribute defined in this class.
      */
-    private function parseAndFillConfiguration($configurations)
+    private function parseAndFillConfiguration(array $configurations): void
     {
         $this->default_include = isset($configurations['include']) ?
             array_merge($this->default_include, $configurations['include']) : $this->default_include;

@@ -15,11 +15,8 @@ use Perseid\LaravelCdn\Exceptions\MissingConfigurationFileException;
  */
 class CdnHelper implements CdnHelperInterface
 {
-    protected Repository $configurations;
-
-    public function __construct(Repository $configurations)
+    public function __construct(protected Repository $configurations)
     {
-        $this->configurations = $configurations;
     }
 
     public function getConfigurations()
@@ -33,7 +30,7 @@ class CdnHelper implements CdnHelperInterface
         return $configurations;
     }
 
-    public function validate($configuration, $required)
+    public function validate($configuration, $required): void
     {
         // search for any null or empty field to throw an exception
         $missing = '';
@@ -45,35 +42,31 @@ class CdnHelper implements CdnHelperInterface
             }
         }
 
-        if ($missing) {
+        if ($missing !== '' && $missing !== '0') {
             throw new MissingConfigurationException('Missed Configuration:'.$missing);
         }
     }
 
-    public function parseUrl($url)
+    public function parseUrl($url): array|false
     {
-        return parse_url($url);
+        return parse_url((string) $url);
     }
 
     /**
      * check if a string starts with a string.
      *
-     *
-     * @return bool
      */
-    public function startsWith($with, $str)
+    public function startsWith($with, $str): bool
     {
-        return substr($str, 0, strlen($with)) === $with;
+        return str_starts_with((string) $str, (string) $with);
     }
 
     /**
      * remove any extra slashes '/' from the path.
      *
-     *
-     * @return string
      */
-    public function cleanPath($path)
+    public function cleanPath($path): string
     {
-        return rtrim(ltrim($path, '/'), '/');
+        return rtrim(ltrim((string) $path, '/'), '/');
     }
 }

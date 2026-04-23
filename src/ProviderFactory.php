@@ -21,10 +21,10 @@ class ProviderFactory implements ProviderFactoryInterface
         }
 
         // prepare the full driver class name
-        $driver_class = self::DRIVERS_NAMESPACE.ucwords($provider).'Provider';
+        $driver_class = self::DRIVERS_NAMESPACE.ucwords((string) $provider).'Provider';
 
         if (! class_exists($driver_class)) {
-            throw new UnsupportedProviderException("CDN provider ($provider) is not supported");
+            throw new UnsupportedProviderException(sprintf('CDN provider (%s) is not supported', $provider));
         }
 
         // initialize the driver object and initialize it with the configurations

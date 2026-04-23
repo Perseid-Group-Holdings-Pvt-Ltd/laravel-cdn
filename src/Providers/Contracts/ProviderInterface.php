@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Perseid\LaravelCdn\Providers\Contracts;
 
 interface ProviderInterface
@@ -22,4 +24,3 @@ interface ProviderInterface
 
     public function setS3Client($s3_client);
 }
-

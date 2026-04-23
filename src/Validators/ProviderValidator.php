@@ -13,7 +13,7 @@ class ProviderValidator extends Validator implements ProviderValidatorInterface
      *
      * @throws MissingConfigurationException
      */
-    public function validate($configuration, $required)
+    public function validate($configuration, $required): void
     {
         // search for any null or empty field to throw an exception
         $missing = '';
@@ -25,7 +25,7 @@ class ProviderValidator extends Validator implements ProviderValidatorInterface
             }
         }
 
-        if ($missing) {
+        if ($missing !== '' && $missing !== '0') {
             throw new MissingConfigurationException('Missed Configuration:'.$missing);
         }
     }

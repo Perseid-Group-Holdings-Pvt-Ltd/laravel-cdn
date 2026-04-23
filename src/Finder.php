@@ -14,12 +14,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 class Finder extends SymfonyFinder implements FinderInterface
 {
-    protected $console;
-
-    public function __construct(ConsoleOutput $console)
+    public function __construct(protected \Symfony\Component\Console\Output\ConsoleOutput $console)
     {
-        $this->console = $console;
-
         parent::__construct();
     }
 
@@ -49,7 +45,7 @@ class Finder extends SymfonyFinder implements FinderInterface
         $assets = [];
         foreach ($this->files() as $file) {
             // user terminal message
-            $this->console->writeln('<fg=cyan>'.'Path: '.$file->getRealpath().'</fg=cyan>');
+            $this->console->writeln('<fg=cyan>Path: '.$file->getRealpath().'</fg=cyan>');
 
             $assets[] = $file;
         }
@@ -60,7 +56,7 @@ class Finder extends SymfonyFinder implements FinderInterface
     /**
      * Add the included directories and files.
      */
-    private function includeThis(AssetInterface $asset_holder)
+    private function includeThis(AssetInterface $asset_holder): void
     {
 
         // include the included directories
@@ -83,7 +79,7 @@ class Finder extends SymfonyFinder implements FinderInterface
     /**
      * exclude the ignored directories and files.
      */
-    private function excludeThis(AssetInterface $asset_holder)
+    private function excludeThis(AssetInterface $asset_holder): void
     {
         // add or ignore hidden directories
         $this->ignoreDotFiles($asset_holder->getExcludeHidden());

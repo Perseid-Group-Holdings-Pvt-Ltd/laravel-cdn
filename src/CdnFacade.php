@@ -17,11 +17,6 @@ class CdnFacade implements CdnFacadeInterface
     protected $configurations;
 
     /**
-     * @var ProviderFactoryInterface
-     */
-    protected $provider_factory;
-
-    /**
      * instance of the default provider object.
      *
      * @var ProviderInterface
@@ -29,27 +24,13 @@ class CdnFacade implements CdnFacadeInterface
     protected $provider;
 
     /**
-     * @var CdnHelperInterface
-     */
-    protected $helper;
-
-    /**
-     * @var CdnFacadeValidator
-     */
-    protected $cdn_facade_validator;
-
-    /**
      * Calls the provider initializer.
      */
     public function __construct(
-        ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper,
-        CdnFacadeValidator $cdn_facade_validator
+        protected \Perseid\LaravelCdn\Contracts\ProviderFactoryInterface $provider_factory,
+        protected \Perseid\LaravelCdn\Contracts\CdnHelperInterface $helper,
+        protected \Perseid\LaravelCdn\Validators\CdnFacadeValidator $cdn_facade_validator
     ) {
-        $this->provider_factory = $provider_factory;
-        $this->helper = $helper;
-        $this->cdn_facade_validator = $cdn_facade_validator;
-
         $this->init();
     }
 
@@ -77,19 +58,22 @@ class CdnFacade implements CdnFacadeInterface
      *
      * @throws EmptyPathException, \InvalidArgumentException
      */
-    public function mix($path)
+    public function mix(string $path)
     {
         static $manifest = null;
         if (is_null($manifest)) {
             $manifest = json_decode(file_get_contents(public_path('mix-manifest.json')), true);
         }
+
         if (isset($manifest['/'.$path])) {
             return $this->generateUrl($manifest['/'.$path], 'public/');
         }
+
         if (isset($manifest[$path])) {
             return $this->generateUrl($manifest[$path], 'public/');
         }
-        throw new \InvalidArgumentException("File {$path} not defined in asset manifest.");
+
+        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
     }
 
     /**
@@ -108,10 +92,12 @@ class CdnFacade implements CdnFacadeInterface
         if (is_null($manifest)) {
             $manifest = json_decode(file_get_contents(public_path('build/rev-manifest.json')), true);
         }
+
         if (isset($manifest[$path])) {
             return $this->generateUrl('build/'.$manifest[$path], 'public/');
         }
-        throw new \InvalidArgumentException("File {$path} not defined in asset manifest.");
+
+        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
     }
 
     /**
@@ -130,13 +116,15 @@ class CdnFacade implements CdnFacadeInterface
         if (is_null($manifest)) {
             $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
         }
+
         if (isset($manifest[$path])) {
             return $this->generateUrl(
                 'build/'.
                 $manifest[$path]['file'],
                 $this->configurations['providers']['aws']['s3']['upload_folder'].'public/');
         }
-        throw new \InvalidArgumentException("File {$path} not defined in asset manifest.");
+
+        throw new \InvalidArgumentException(sprintf('File %s not defined in asset manifest.', $path));
     }
 
     /**
@@ -159,7 +147,7 @@ class CdnFacade implements CdnFacadeInterface
      * to return an object of the default provider specified in the
      * config file.
      */
-    private function init()
+    private function init(): void
     {
         // return the configurations from the config file
         $this->configurations = $this->helper->getConfigurations();
@@ -172,10 +160,9 @@ class CdnFacade implements CdnFacadeInterface
      * check if package is surpassed or not then
      * prepare the path before generating the url.
      *
-     * @param  string  $prepend
      * @return mixed
      */
-    private function generateUrl($path, $prepend = '')
+    private function generateUrl(string $path, string $prepend = '')
     {
         // if the package is surpassed, then return the same $path
         // to load the asset from the localhost

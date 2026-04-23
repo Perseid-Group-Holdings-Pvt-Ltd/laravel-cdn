@@ -16,37 +16,24 @@ use Perseid\LaravelCdn\Contracts\ProviderFactoryInterface;
 class Cdn implements CdnInterface
 {
     /**
-     * An instance of the finder class.
-     *
-     * @var Contracts\
-     */
-    protected $finder;
-
-    /**
-     * The object that will hold the assets configurations
-     * and the paths of the assets.
-     *
-     * @var Contracts\AssetInterface
-     */
-    protected $asset_holder;
-
-    protected $provider_factory;
-
-    protected $helper;
-
-    /**
      * @internal param \app\CDN\Repository $configurations
      */
     public function __construct(
-        FinderInterface $finder,
-        AssetInterface $asset_holder,
-        ProviderFactoryInterface $provider_factory,
-        CdnHelperInterface $helper
-    ) {
-        $this->finder = $finder;
-        $this->asset_holder = $asset_holder;
-        $this->provider_factory = $provider_factory;
-        $this->helper = $helper;
+        /**
+         * An instance of the finder class.
+         *
+         * @var Contracts\
+         */
+        protected \Perseid\LaravelCdn\Contracts\FinderInterface $finder,
+        /**
+         * The object that will hold the assets configurations
+         * and the paths of the assets.
+         */
+        protected \Perseid\LaravelCdn\Contracts\AssetInterface $asset_holder,
+        protected \Perseid\LaravelCdn\Contracts\ProviderFactoryInterface $provider_factory,
+        protected \Perseid\LaravelCdn\Contracts\CdnHelperInterface $helper
+    )
+    {
     }
 
     /**

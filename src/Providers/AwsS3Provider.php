@@ -90,9 +90,9 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * @return Mix | null
      */
-    public function __get($attr)
+    public function __get(string $attr): mixed
     {
-        return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
+        return $this->supplier[$attr] ?? null;
     }
 
     /**
@@ -102,7 +102,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      *
      * @return $this
      */
-    public function init($configurations)
+    public function init($configurations): static
     {
         // merge the received config array with the default configurations array to
         // fill missed keys with null or default values.
@@ -133,10 +133,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * Upload assets.
      *
-     *
-     * @return bool
      */
-    public function upload($assets)
+    public function upload($assets): bool
     {
         // connect before uploading
         $connected = $this->connect();
@@ -155,7 +153,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
             foreach ($assets as $file) {
                 try {
-                    $this->console->writeln('<fg=cyan>'.'Uploading file path: '.$file->getRealpath().'</fg=cyan>');
+                    $this->console->writeln('<fg=cyan>Uploading file path: '.$file->getRealpath().'</fg=cyan>');
                     $command = $this->s3_client->getCommand('putObject', [
 
                         // the bucket name
@@ -193,10 +191,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * Create an S3 client instance
      * (Note: it will read the credentials form the .env file).
-     *
-     * @return bool
      */
-    public function connect()
+    public function connect(): bool
     {
         try {
             // Instantiate an S3 client
@@ -208,8 +204,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
             ]
             )
             );
-        } catch (\Exception $e) {
-            $this->console->writeln('<fg=red>Connection error: '.$e->getMessage().'</fg=red>');
+        } catch (\Exception $exception) {
+            $this->console->writeln('<fg=red>Connection error: '.$exception->getMessage().'</fg=red>');
 
             return false;
         }
@@ -217,7 +213,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         return true;
     }
 
-    public function setS3Client($s3_client)
+    public function setS3Client($s3_client): void
     {
         $this->s3_client = $s3_client;
     }
@@ -225,7 +221,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * @return array
      */
-    public function getBucket()
+    public function getBucket(): string
     {
         // this step is very important, "always assign returned array from
         // magical function to a local variable if you need to modify it's
@@ -240,10 +236,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Empty bucket.
-     *
-     * @return bool
      */
-    public function emptyBucket()
+    public function emptyBucket(): bool
     {
         // connect before uploading
         $connected = $this->connect();
@@ -278,8 +272,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
             ]);
 
             $empty->delete();
-        } catch (S3Exception $e) {
-            $this->console->writeln('<fg=red>Deletion error: '.$e->getMessage().'</fg=red>');
+        } catch (S3Exception $s3Exception) {
+            $this->console->writeln('<fg=red>Deletion error: '.$s3Exception->getMessage().'</fg=red>');
 
             return false;
         }
@@ -293,10 +287,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
      * This function will be called from the CdnFacade class when
      * someone use this {{ Cdn::asset('') }} facade helper.
      *
-     *
-     * @return string
      */
-    public function urlGenerator($path)
+    public function urlGenerator($path): string
     {
         if ($this->getCloudFront() === true) {
             $url = $this->cdn_helper->parseUrl($this->getCloudFrontUrl());
@@ -307,7 +299,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $url = $this->cdn_helper->parseUrl($this->getUrl());
 
         $bucket = $this->getBucket();
-        $bucket = (! empty($bucket)) ? $bucket.'.' : '';
+        $bucket = (empty($bucket)) ? '' : $bucket.'.';
 
         return $url['scheme'].'://'.$bucket.$url['host'].'/'.$path;
     }
@@ -324,18 +316,12 @@ class AwsS3Provider extends Provider implements ProviderInterface
         return $cloudfront;
     }
 
-    /**
-     * @return string
-     */
-    public function getCloudFrontUrl()
+    public function getCloudFrontUrl(): string
     {
         return rtrim($this->cloudfront_url, '/').'/';
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return rtrim($this->provider_url, '/').'/';
     }
@@ -373,7 +359,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             return $assets;
         }
 
-        return $assets->filter(function ($file) use (&$filesOnAWS) {
+        return $assets->filter(function ($file) use (&$filesOnAWS): bool {
             $fileOnAWS = $filesOnAWS->get(str_replace(
                 '\\',
                 '/',
