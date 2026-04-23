@@ -2,7 +2,15 @@
 
 namespace Perseid\LaravelCdn\Facades;
 
-class CdnFacadeAccessor
-{
+use Illuminate\Support\Facades\Facade;
 
+class CdnFacadeAccessor extends Facade
+{
+    /**
+     * Get the registered name of the component.
+     */
+    protected static function getFacadeAccessor(): string
+    {
+        return 'CDN';
+    }
 }

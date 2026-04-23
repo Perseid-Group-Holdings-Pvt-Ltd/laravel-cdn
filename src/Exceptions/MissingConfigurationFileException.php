@@ -2,7 +2,7 @@
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class MissingConfigurationFileException
+class MissingConfigurationFileException extends Exceptions
 {
 
 }

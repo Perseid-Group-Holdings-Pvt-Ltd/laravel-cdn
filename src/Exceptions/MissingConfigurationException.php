@@ -2,7 +2,7 @@
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class MissingConfigurationException
+class MissingConfigurationException extends Exceptions
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class UnsupportedProviderException
+class UnsupportedProviderException extends Exceptions
 {
 
 }

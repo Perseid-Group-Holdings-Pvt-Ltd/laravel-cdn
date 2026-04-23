@@ -2,7 +2,9 @@
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class Exceptions
+use RuntimeException;
+
+class Exceptions extends RuntimeException
 {
 
 }

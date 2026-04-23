@@ -2,7 +2,7 @@
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class EmptyPathException
+class EmptyPathException extends Exceptions
 {
 
 }
