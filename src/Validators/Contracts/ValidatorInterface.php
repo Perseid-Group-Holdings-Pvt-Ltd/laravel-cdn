@@ -2,7 +2,7 @@
 
 namespace Perseid\LaravelCdn\Validators\Contracts;
 
-interface CdnFacadeValidatorInterface
+interface ValidatorInterface
 {
 
 }
