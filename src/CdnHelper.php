@@ -15,9 +15,7 @@ use Perseid\LaravelCdn\Exceptions\MissingConfigurationFileException;
  */
 class CdnHelper implements CdnHelperInterface
 {
-    public function __construct(protected Repository $configurations)
-    {
-    }
+    public function __construct(protected Repository $configurations) {}
 
     public function getConfigurations()
     {
@@ -54,7 +52,6 @@ class CdnHelper implements CdnHelperInterface
 
     /**
      * check if a string starts with a string.
-     *
      */
     public function startsWith($with, $str): bool
     {
@@ -63,7 +60,6 @@ class CdnHelper implements CdnHelperInterface
 
     /**
      * remove any extra slashes '/' from the path.
-     *
      */
     public function cleanPath($path): string
     {

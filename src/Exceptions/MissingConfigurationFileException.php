@@ -4,7 +4,4 @@ declare(strict_types=1);
 
 namespace Perseid\LaravelCdn\Exceptions;
 
-class MissingConfigurationFileException extends Exceptions
-{
-
-}
+class MissingConfigurationFileException extends Exceptions {}

@@ -4,8 +4,8 @@ namespace Perseid\LaravelCdn;
 
 use Perseid\LaravelCdn\Contracts\AssetInterface;
 use Perseid\LaravelCdn\Contracts\FinderInterface;
-use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * Class Finder.
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 class Finder extends SymfonyFinder implements FinderInterface
 {
-    public function __construct(protected \Symfony\Component\Console\Output\ConsoleOutput $console)
+    public function __construct(protected ConsoleOutput $console)
     {
         parent::__construct();
     }
@@ -103,4 +103,3 @@ class Finder extends SymfonyFinder implements FinderInterface
         }
     }
 }
-

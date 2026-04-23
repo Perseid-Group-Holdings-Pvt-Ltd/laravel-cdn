@@ -24,17 +24,15 @@ class Cdn implements CdnInterface
          *
          * @var Contracts\
          */
-        protected \Perseid\LaravelCdn\Contracts\FinderInterface $finder,
+        protected FinderInterface $finder,
         /**
          * The object that will hold the assets configurations
          * and the paths of the assets.
          */
-        protected \Perseid\LaravelCdn\Contracts\AssetInterface $asset_holder,
-        protected \Perseid\LaravelCdn\Contracts\ProviderFactoryInterface $provider_factory,
-        protected \Perseid\LaravelCdn\Contracts\CdnHelperInterface $helper
-    )
-    {
-    }
+        protected AssetInterface $asset_holder,
+        protected ProviderFactoryInterface $provider_factory,
+        protected CdnHelperInterface $helper
+    ) {}
 
     /**
      * Will be called from the PushCommand class on Fire().
@@ -71,4 +69,3 @@ class Cdn implements CdnInterface
         return $provider->emptyBucket();
     }
 }
-

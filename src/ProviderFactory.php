@@ -31,4 +31,3 @@ class ProviderFactory implements ProviderFactoryInterface
         return App::make($driver_class)->init($configurations);
     }
 }
-

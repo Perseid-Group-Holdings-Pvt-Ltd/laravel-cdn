@@ -2,13 +2,14 @@
 
 namespace Perseid\LaravelCdn\Providers;
 
-use Perseid\LaravelCdn\Contracts\CdnHelperInterface;
-use Perseid\LaravelCdn\Providers\Contracts\ProviderInterface;
-use Perseid\LaravelCdn\Validators\Contracts\ProviderValidatorInterface;
+use App\CDN\Validators\Contracts\ConfigurationsInterface;
 use Aws\S3\BatchDelete;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use Illuminate\Support\Collection;
+use Perseid\LaravelCdn\Contracts\CdnHelperInterface;
+use Perseid\LaravelCdn\Providers\Contracts\ProviderInterface;
+use Perseid\LaravelCdn\Validators\Contracts\ProviderValidatorInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class AwsS3Provider extends Provider implements ProviderInterface
@@ -65,7 +66,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     protected $cdn_helper;
 
     /**
-     * @var \App\CDN\Validators\Contracts\ConfigurationsInterface
+     * @var ConfigurationsInterface
      */
     protected $configurations;
 
@@ -132,7 +133,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Upload assets.
-     *
      */
     public function upload($assets): bool
     {
@@ -286,7 +286,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * This function will be called from the CdnFacade class when
      * someone use this {{ Cdn::asset('') }} facade helper.
-     *
      */
     public function urlGenerator($path): string
     {

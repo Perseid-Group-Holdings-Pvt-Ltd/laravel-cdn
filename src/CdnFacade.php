@@ -27,9 +27,9 @@ class CdnFacade implements CdnFacadeInterface
      * Calls the provider initializer.
      */
     public function __construct(
-        protected \Perseid\LaravelCdn\Contracts\ProviderFactoryInterface $provider_factory,
-        protected \Perseid\LaravelCdn\Contracts\CdnHelperInterface $helper,
-        protected \Perseid\LaravelCdn\Validators\CdnFacadeValidator $cdn_facade_validator
+        protected ProviderFactoryInterface $provider_factory,
+        protected CdnHelperInterface $helper,
+        protected CdnFacadeValidator $cdn_facade_validator
     ) {
         $this->init();
     }
@@ -189,4 +189,3 @@ class CdnFacade implements CdnFacadeInterface
         return $this->provider->urlGenerator($clean_path);
     }
 }
-
