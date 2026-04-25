@@ -17,14 +17,9 @@ use Perseid\LaravelCdn\Contracts\ProviderFactoryInterface;
  */
 class Cdn implements CdnInterface
 {
-    /**
-     * @internal param \app\CDN\Repository $configurations
-     */
     public function __construct(
         /**
          * An instance of the finder class.
-         *
-         * @var Contracts\
          */
         protected FinderInterface $finder,
         /**

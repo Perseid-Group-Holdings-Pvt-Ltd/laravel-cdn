@@ -47,20 +47,13 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     protected array $rules = ['version', 'region', 'key', 'secret', 'buckets', 'url'];
 
-    /**
-     * this array holds the parsed configuration to be used across the class.
-     */
     protected array $supplier;
 
     protected S3Client $s3_client;
 
-    protected $batch;
+    protected CdnHelperInterface $cdn_helper;
 
-    protected $cdn_helper;
-
-    protected $configurations;
-
-    protected $provider_validator;
+    protected ProviderValidatorInterface $provider_validator;
 
     public function __construct(
         ConsoleOutput $console,
@@ -206,7 +199,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         // state or apply any php function on it." because the returned is
         // a copy of the original variable. this prevents this error:
         // Indirect modification of overloaded property
-        // Vinelab\Cdn\Providers\AwsS3Provider::$buckets has no effect
+        // Vine lab\Cdn\Providers\AwsS3Provider::$buckets has no effect
         $bucket = $this->buckets;
 
         return rtrim(key($bucket), '/');

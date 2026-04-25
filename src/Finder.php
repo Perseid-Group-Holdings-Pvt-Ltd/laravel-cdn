@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Perseid\LaravelCdn;
 
+use Illuminate\Support\Collection;
 use Perseid\LaravelCdn\Contracts\AssetInterface;
 use Perseid\LaravelCdn\Contracts\FinderInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -24,21 +25,18 @@ class Finder extends SymfonyFinder implements FinderInterface
     /**
      * return a collection of arrays of assets paths found
      * in the included directories, except all ignored
-     * (directories, patterns, extensions and files).
-     *
-     *
-     * @return Collection
+     * (directories, patterns, extensions, and files).
      */
-    public function read(AssetInterface $asset_holder)
+    public function read(AssetInterface $paths): Collection
     {
         /*
          * add the included directories and files
          */
-        $this->includeThis($asset_holder);
+        $this->includeThis($paths);
         /*
          * exclude the ignored directories and files
          */
-        $this->excludeThis($asset_holder);
+        $this->excludeThis($paths);
 
         // user terminal message
         $this->console->writeln('<fg=yellow>Files to upload:</fg=yellow>');
@@ -64,7 +62,7 @@ class Finder extends SymfonyFinder implements FinderInterface
         // include the included directories
         $this->in($asset_holder->getIncludedDirectories());
 
-        // include files with this extensions
+        // include files with this extension
         foreach ($asset_holder->getIncludedExtensions() as $extension) {
             $this->name('*'.$extension);
         }
@@ -91,7 +89,7 @@ class Finder extends SymfonyFinder implements FinderInterface
             $this->notName($name);
         }
 
-        // exclude files (if exist) with this extensions
+        // exclude files (if exist) with this extension
         $excluded_extensions = $asset_holder->getExcludedExtensions();
         if (! empty($excluded_extensions)) {
             foreach ($asset_holder->getExcludedExtensions() as $extension) {

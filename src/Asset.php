@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Perseid\LaravelCdn;
 
+use Illuminate\Support\Collection;
 use Perseid\LaravelCdn\Contracts\AssetInterface;
 
 /**
  * Class Asset used to parse and hold all assets and
  * paths related data and configurations.
- *
- * @category DTO
  */
 class Asset implements AssetInterface
 {
     /*
      * Allowed assets for upload (found in included_directories)
-     *
-     * @var Collection
      */
-    public $assets;
+    public Collection $assets;
 
     /**
      * default [include] configurations.
@@ -43,8 +40,6 @@ class Asset implements AssetInterface
 
     protected array $included_directories;
 
-    protected array $included_files;
-
     protected array $included_extensions;
 
     protected array $included_patterns;
@@ -57,16 +52,10 @@ class Asset implements AssetInterface
 
     protected array $excluded_patterns;
 
-    /*
-     * @var boolean
-     */
-    protected mixed $exclude_hidden;
+    protected bool $exclude_hidden;
 
     /**
      * build an Asset object that contains the assets related configurations.
-     *
-     * @param  array  $configurations
-     * @return $this
      */
     public function init($configurations = []): static
     {
@@ -120,26 +109,17 @@ class Asset implements AssetInterface
         return $this->excluded_patterns;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getAssets()
+    public function getAssets(): Collection
     {
         return $this->assets;
     }
 
-    /**
-     * @param  mixed  $assets
-     */
     public function setAssets($assets): void
     {
         $this->assets = $assets;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExcludeHidden()
+    public function getExcludeHidden(): bool
     {
         return $this->exclude_hidden;
     }
