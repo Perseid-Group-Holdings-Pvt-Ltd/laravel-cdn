@@ -48,7 +48,7 @@
                 "Perseid\\LaravelCdn\\CdnServiceProvider"
             ],
             "aliases": {
-                "Cdn": "Perseid\\LaravelCdn\\CdnFacade"
+                "Cdn": "Perseid\\LaravelCdn\\Facades\\CdnFacadeAccessor"
             }
         }
     },

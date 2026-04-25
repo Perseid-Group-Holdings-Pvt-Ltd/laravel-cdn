@@ -2,7 +2,6 @@
 
 namespace Perseid\LaravelCdn;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Perseid\LaravelCdn\Console\EmptyCommand;
 use Perseid\LaravelCdn\Console\PushCommand;
@@ -79,8 +78,8 @@ class CdnServiceProvider extends ServiceProvider
             'Perseid\LaravelCdn\Validators\Validator'
         );
 
-        $this->app->singleton('CDN', function ($app) {
-            return $app->make('Perseid\LaravelCdn\CdnFacade');
+        $this->app->singleton('Cdn', function ($app) {
+            return $app->make('Perseid\LaravelCdn\Contracts\CdnFacadeInterface');
         });
     }
 }

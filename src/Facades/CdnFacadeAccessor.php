@@ -13,6 +13,6 @@ class CdnFacadeAccessor extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'CDN';
+        return 'Cdn';
     }
 }
