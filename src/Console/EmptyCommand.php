@@ -14,7 +14,7 @@ class EmptyCommand extends Command
     {
         $this->info('Emptying the CDN storage...');
 
-        app('Perseid\LaravelCdn\Contracts\CdnInterface')->empty();
+        app('Perseid\LaravelCdn\Contracts\CdnInterface')->emptyBucket();
 
         $this->info('CDN storage emptied successfully.');
     }
